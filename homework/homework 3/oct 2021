@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>Vaishnavi's Homework</title>
+    
+</head>
+<body>
+
+
+<script> 
+var myNumber = 42;
+
+myNumber = myNuber + 20;
+
+console.log(myNumber);
+
+
+
+</script>
+</body>
+</html>
