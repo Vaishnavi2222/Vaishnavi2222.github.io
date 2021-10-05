@@ -12,9 +12,18 @@
 <script> 
 var myNumber = 42;
 
+console.log(myNumber);
+
 myNumber = myNuber + 20;
 
 console.log(myNumber);
+
+var language1 = "JavaScript";
+
+//arays
+var names = ["Vaish, Arushi"];
+console.log( names[0]);
+
 
 
 
