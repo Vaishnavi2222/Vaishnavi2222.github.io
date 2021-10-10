@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>What's your zodiac sign?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+<style>
+    body {
+                background-color: rgb(204, 199, 231);
+            } </style>
+<h1 id="header">What's your zodiac sign?</h1>
+
+<!--Zodiac Dropdown menu-->
+<label for="zodiac">Kindly select: </label>
+<select id="zodiac">
+
+<option value="">Choose one</option>
+<option value="choice1">Aries</option>
+<option value="choice2">Taurus</option>
+<option value="choice3">Gemini</option>
+<option value="choice4">Cancer</option>
+<option value="choice5">Leo</option>
+<option value="choice6">Virgo</option>
+<option value="choice7">Libra</option>
+<option value="choice8">Scorpio</option>
+<option value="choice9">Sagittarius</option>
+<option value="choice10">Capricorn</option>
+<option value="choice11">Aquarius</option>
+<option value="choice12">Pisces</option>
+</select>
+
+<p></p>
+<script>
+    //Define elements for every response 
+    const select = document.querySelector('select');
+    const para = document.querySelector('p');
+    select.onchange = setZodiac;
+    function setZodiac() {
+        const choice = select.value;
+
+    if(choice === 'choice1') {
+    para.textContent = 'Aries you are more savage than Kanye West!';} 
+
+    if(choice === 'choice2') {
+    para.textContent = 'Taurus you are always hungry and you love your bed more than anything (me)';} 
+
+    if(choice === 'choice3') {
+    para.textContent = 'Gemini stop worrying about evrything around you!';} 
+
+    if(choice === 'choice4') {
+    para.textContent = 'Cancer once you are done crying, I will tell you what type of person you are.';}
+
+    if(choice === 'choice5') {
+    para.textContent = 'Leo are you done ranting?';}
+
+    if(choice === 'choice6') {
+    para.textContent = 'Virgo you are a clean freak! ';}
+
+    if(choice === 'choice7') {
+        para.textContent = 'Libra stop buying unnecessary stuff!';}
+
+    if (choice === 'choice8') {
+    para.textContent = 'Scorpio you should join FBI because of your stalking skills.';}
+
+    if(choice === 'choice9') {
+    para.textContent = 'Sagittarius everday is not a weekend!';}
+
+    if(choice === 'choice10') {
+    para.textContent = 'Capricorn stop overthinking!';}
+
+    if(choice === 'choice11') {
+    para.textContent = 'Aquarius please sleep.';}
+
+    if(choice === 'choice12') {
+    para.textContent = 'Pisces wine is not the answer to all your problems.';}
+}
+
+</script>
+
+
+
+
+
+
+</style>
+</body>
+</html>
