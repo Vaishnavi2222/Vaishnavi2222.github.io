@@ -1,0 +1,5 @@
+console.log("Welcome");
+
+d3.csv("/Top50.csv", function(error, data) {
+    console.log("csv:",data);
+});
