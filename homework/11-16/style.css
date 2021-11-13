@@ -1,0 +1,25 @@
+body {
+    font-family: 'futura';
+    margin: 10;
+    text-align: center;
+    color: ivory;
+    
+}
+
+#banner {
+    background-color: rgb(42, 163, 42);
+    margin: 20px;
+
+}
+
+h1 {
+    color: rgb(42, 163, 42);
+    background-position: center;
+    margin: 20px;
+    text-align-last: center;
+}
+
+p {
+    font-family: sans-serif;
+    margin: 40px;
+}
