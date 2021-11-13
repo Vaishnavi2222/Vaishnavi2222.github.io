@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Final Project Data (Console)</title><link rel="stylesheet" href="./style.css"/>
+
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+
+    <body>
+    <h1 id="header">Top 50 Spotify Songs of 2019</h1>
+
+    <div id="banner">
+    <p>
+    This data visualisation is about top 50 songs of 2019 played on Spotify worldwide. 
+    </p>
+    </div>
+
+<svg>
+    
+</svg>
+
+    <script>
+    d3.csv("Top50.csv", function(error, data) {
+    console.log(data);
+    });
+    </script>
+
+
+
+
+</body>
+</html>
