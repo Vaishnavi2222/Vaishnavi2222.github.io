@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <style>
+    .box {
+    fill: transparent;
+    stroke: red;
+    stroke-width: 2px;
+}
+</style>
+
+</head>
+<body>
+
+    <svg id="chart" width="100%" height="100vh"></svg>
+
+    <script>
+        var svg = d3.select("#chart");
+
+var data1 = [
+"Hello Class, my name is Vaish",
+"Test Title",
+"Some really long text that we will probably have fun working with."
+];
+
+var data2 = [
+"One little string..."
+];
+
+var coloumnWidth = 100;
+
+function drawBoxes (currentData) {
+    var boxes = svg.selectAll(".box")
+    .data(currentData);
+    boxes.enter().append("rect")
+    .attr("class", "box")
+    .attr("x", function(d, i) {
+      return i * columnWidth;
+    })
+    .attr("y", 0)
+    .attr("width", columnWidth)
+    .attr("height", 200);
+    boxes.exit().remove();
+
+}
+var labels = svg.selectAll(".label")
+.data(data);
+
+var enterLabels = labels.enter().append("text")
+.attr("class", "label")
+.attr("y", 0)
+.attr("x", function(d, i) {
+    return i * columnWidth;
+})
+.attr("width", columnWidth)
+.attr("height", 200);
+
+labels.merge(enterLabels)
+.text(function(d) {
+    return d;
+});
+
+labels.exit().remove();
+
+    </script>
+
+</body>
+</html>
