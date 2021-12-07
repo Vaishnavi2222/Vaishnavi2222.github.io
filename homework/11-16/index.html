@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
-        <title>Final Project Data (Console)</title><link rel="stylesheet" href="./style.css"/>
-
-        <script src="https://d3js.org/d3.v4.min.js"></script>
+    <meta charset="utf-8" />
+    <title> Spotify Final Project Data </title><link rel="stylesheet" href="./style.css"/>
+    <link rel="shortcut icon" type="image/png" href="spotify favi.png"/>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     </head>
 
     <body>
+    <img src="spotify.png" alt="" style="width:5%">
+
     <h1 id="header">Top 50 Spotify Songs of 2019</h1>
 
     <div id="banner">
@@ -18,15 +20,40 @@
 
     <div class="section">
     <svg id="chart1"></svg>
+    <div id="tooltip"> </div>
     </div>
+    
 
-    <script>
-    d3.csv("Top50.csv", function(error, data) {
+<script>
+
+d3.csv("Top50f.csv", function(error, data) {
+
     console.log(data);
+    
+    
+
+    //FOREACH
+
+    data.forEach(function(d) {
+    d["Rank"] = parseFloat(d["Rank"]);
+    d["Liveness"] = parseFloat(d["Liveness"]);
+    d["Acousticness"]= parseFloat(d["Acousticness"]);
+    d["Beats.Per.Minute"]= parseFloat(d["Beats.Per.Minute"]);
+    d["Danceability"]= parseFloat(d["Danceability"]);
+    d["Energy"]= parseFloat(d["Energy"]);
+    d["Length"]= parseFloat(d["Length"]);
+    d["Loudness"]= parseFloat(d["Loudness"]);
+    d["Popularity"]= parseFloat(d["Popularity"]);
+    d["Speechiness"]= parseFloat(d["Speechiness"]);
+    d["Valence"]= parseFloat(d["Valence"]);
     });
-    </script>
 
+    drawBubbles(data);
+    })
 
+</script>
+
+<script src="TP50.js"></script>
 
 
 </body>
