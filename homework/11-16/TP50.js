@@ -23,7 +23,7 @@ var x = d3.scaleOrdinal()
 // A color scale
 var color = d3.scaleOrdinal()
 .domain([1, 2, 3, 4, 5, 6])
-.range([ "#1DB948", "#1DB954", "#1DB930","#1DB920", "#1DB910", "#1DB903"])
+.range([ "#29CC3A", "#1DB954", "#1DB930","#41C817", "#78F74F", "#20AA2E"])
 
 var radiusScale = d3.scaleLinear()
 .domain([25, 80])
@@ -60,10 +60,21 @@ var node = svg
 .on("end", dragended))
 
 .on("mouseover", function(d) {
-tooltip.html(`Song: ${d.TrackName}`) // change here
+tooltip.html(
+
+"Song: <b>" +
+d.TrackName+
+"</b></br>Artist: <b>" +
+d.ArtistName+
+"</b></br>Genre: <b>" +
+d.Genre+
+"</b></br>Rank in Top 50: <b>" +
+d.Rank+
+"</b>")
 .style("visibility", "visible")
 .style("top", d3.event.pageY + 10 + "px")
-.style("left", d3.event.pageX + 10 + "px");
+.style("left", d3.event.pageX + 10 + "px")
+;
 
 
 console.log("hover");
