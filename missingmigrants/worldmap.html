@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>    
+    <title> world map class</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="bar_chart.js"></script>
+
+    <style>
+        * {
+        box-sizing: border-box;
+        }
+    </style>
+
+</head>
+
+
+<body>
+    <div class="title_1">
+        <div class="title_2">
+            <h1 class="title"> Missing Migrants Project </h1>
+        </div>
+        <p class="subhead">At least <span class="span"> 178 </span> people have died attempting to leave Afghanistan on evacuation flights in 2021. Since the Taliban takeover in Afghanistan in August 2021, the number of Afghans seeking asylum in Iran in search of safety and economic opportunity has increased dramatically. </p>
+    </div>
+
+    <div class="main_design">
+        <div class="viz1">
+            <svg id="my_dataviz" class="bar_viz"></svg>
+            <div class="content">
+                <p>Since the Taliban takeover in Afghanistan in August 2021, the number of Afghans seeking asylum in Iran in search of safety and economic opportunity has increased dramatically. Up to <span class="span"> 5,000 </span> people were reported to arrive daily in the aftermath of the takeover, compared to 1,400–2,500 on average beforehand.</p>
+            </div>
+        </div>
+
+        <h7 class="h7"> Afghanistan to Iran Missing Migrants 2021</h7>
+
+        <div class="grapic">
+            <button type="button" class="btn" onclick="auto_slide()"> Start Visual</button>
+            <svg id="viz">
+                <rect id="ocean"/>
+                <g id="map"></g>
+                <g id="legend"></g>
+            </svg>
+            <form>
+                <!-- <input type="range" id="value" value="0" step="1" min="0" max="11" oninput="outputUpdate(value)"> -->
+                <div style="display: flex; flex-direction: row;">
+                    <output class="val" for=value id="output-1">00</output>
+                    <p style="font-size: 24px;" >deaths</p>
+                </div>
+                <output class="mnth" for=value id="output">January</output>
+            </form>
+        </div>
+    </div>
+
+    <h4 class="h4"><span class="span2"> 470 Deaths </span> and just <span class="span2"> 12 Surviors </span></h4>
+    <div class="conclusion">
+
+        <h3>After all these tragic deaths and losses afghan refugees still have faith in Iran and are making it their new home.</h3>
+
+    </div>
+    <h3 class="h3">Soucres & Articles </h3>
+    
+    <div class="row">
+        <div class="column" style="background:linear-gradient(to right, rgb(0,0,0,0.5),rgb(0,0,0,0.5)), url(./Afg1.png); background-size: contain; background-position-y: 10px; background-position-x: 43px;">
+            <a href="https://www.voanews.com/a/thousands-of-afghans-flee-to-iran-as-uncertainty-grows-under-taliban/6244617.html ">Thousands of Afghans Flee to Iran</a>
+        </div>
+        <div class="column" style="background: linear-gradient(to right, rgb(0,0,0,0.5), rgb(0,0,0,0.5)),url(./Afg2.jpg); background-size: contain;">
+            <a href="https://www.hrw.org/news/2021/09/09/whats-next-afghans-fleeing-taliban# ">Afghanistan in August 2021</a>
+        </div>
+        <div class="column" style="background: linear-gradient(to right, rgb(0,0,0,0.5),  rgb(0,0,0,0.5)),url(./Afg3.jpg); background-size: contain; background-attachment: initial;">
+            <a href="https://www.aljazeera.com/news/2021/11/10/aid-groups-says-4000-5000-afghans-crossing-into-iran-daily ">Afghans crossing into Iran daily </a>
+        </div>
+    </div>
+
+    <script>                
+        //set up width of the chart
+        var width = window.innerWidth;
+        var height = 700;
+
+        //selecting svg element
+        var svg = d3.select("#viz")
+                    .attr("width", width)
+                    .attr("height", height);
+
+        var map = svg.select("#map");
+
+        var slider_months = [ "January", "February", "March", "April", "May", "June", 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        var selected_mnth;
+        runbars()
+
+        function delay(delayInms) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                resolve(2);
+                }, delayInms);
+            });
+        }
+
+
+        async function auto_slide()
+        {
+            var i=0;
+            while(i<12)
+            {
+                outputUpdate(i);
+                await delay(3000);
+                i++;
+            }
+            
+        }
+        
+        var deaths_cause =
+        [
+            {
+                cause: "Vehicle accident / death linked to hazardous transport",
+                cause_name: "Vehicle accident",
+                color: " #992222 "
+            },
+             
+            {
+                cause: "Accidental death",
+                cause_name: "Accidental death",
+                color: "#80615b"
+            },
+            {
+                cause: "Violence",
+                cause_name: "Violence",
+                color: "#b38686"
+            },
+
+            {
+                cause: "Harsh environmental conditions / lack of adequate shelter, food, water",
+                cause_name: "Environmental conditions",
+                color: " #80734f"
+            },
+            {
+                cause: "Mixed or unknown",
+                cause_name: "Mixed or unknown",
+                color: "#bf4519"
+                
+            },
+            {
+                cause: "Sickness / lack of access to adequate healthcare",
+                cause_name: "Sickness",
+                color: "#050201"
+            },
+        ];
+
+        var margin = {
+                    top: 20,
+                    right: 120,
+                    bottom: 120,
+                    left: 40
+                };
+
+
+        var legendX = margin.left + width;
+        var legendY = margin.top;
+
+        var legend = svg.select("#legend")
+                    .attr("transform", "translate(" + legendX + ", " + legendY + ")");
+
+        var legendSize = 20;
+
+    function drw_path(selected_mnth){
+
+        //loading json file
+        d3.json("world-alpha3.json", function(error, world) {
+            
+            //converting topojson to geojson
+            var geoJSON = topojson.feature(world, world.objects.countries);
+            
+            //filter for map
+            geoJSON.features = geoJSON.features.filter(function(d) {
+                                                            return d.id !== "ATA";
+                                                        });
+            
+            //setting scale - W&H of the chart
+            var proj = d3.geoMercator()
+                        .fitSize([width, height], geoJSON);
+        
+            var path = d3.geoPath()
+                        .projection(proj);
+            
+            //assigning values
+            var countries = map.selectAll("path")
+                                .data(geoJSON.features);
+
+            countries.enter()
+                    .append("g")
+                    .append("path")
+                    .attr("d", path)
+                    .attr("d", path)
+                    .attr("fill", "#b7ad92")
+                    .attr("stroke","black")
+                    .attr("vector-effect","non-scaling-stroke")
+                    .attr("stroke-width","2px");
+            
+            svg.select("#ocean")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("fill","#b7ad92");
+
+            var points = [];
+            var lat = [];
+            var long = [];
+
+            d3.csv("AfgtoIran_data.csv", function(error,migrationData){
+                if(error)
+                    {
+                        console.log("data error");
+                    }
+                else{
+                    migrationData.forEach(function(d,i){
+
+                            var str = d.Coordinates;
+                            var po = str.indexOf(" ",7);
+
+                            longitude = str.substr(7, po-7);
+                            latitude = str.substr(po, str.length-po-1);
+
+                            points[i] = {"date": d.Incident_date, "coords": [longitude, latitude],"month":d.reported_month, "death_cause":d.cause_of_death};
+
+                            lat[i] = latitude;
+                            long[i] = longitude;
+
+                            i++;
+                    });
+                    console.log("finaldata", points); 
+                }
+
+
+            var afgCoord = [68.85,37.04]
+
+            const unique = (value, index, self) => 
+                {
+                    return self.indexOf(value) === index
+                }
+
+            var bds =[];
+            var final_data = [];
+
+            i=0;
+            points.forEach(point => {
+                bds[i] = point.month;
+                i++;
+            });
+
+            i=0;
+            points.forEach(point => {
+                if(point.month===selected_mnth)
+                {
+                    final_data[i] = point;
+                    i++;
+                }
+            });
+
+            console.log("final data",final_data);
+            var mnths = bds.filter(unique);
+
+            var locs_data =
+            [
+                {
+                    location: "kabul",
+                    coordinates: [69.2075, 34.5553]
+                },
+                {
+                    location: "Tehran",
+                    coordinates: [51.3347, 35.7219]
+                }
+            ]
+            
+            var dots_loc = map.selectAll("circle.locs")
+                            .data(locs_data);
+
+            dots_loc
+                .enter()
+                .append("circle")
+                .attr("class","locs")
+                .attr("transform", function(d){
+                    return "translate(" + proj(d.coordinates) + ")";
+                })
+                .attr("r", 10)
+                .attr("fill","#ffffff");
+
+
+            dots_loc
+                .enter()
+                .append("text")
+                .text(function(d){
+                   return d.location
+                })
+                .attr("transform", function(d){
+                    return "translate(" + proj(d.coordinates) + ")";
+                })
+                .attr("text-anchor", "left")
+                .attr("font-family", "Open Sans,Arial,Verdana,sans-serif")
+                .attr("font-size", "16px")
+                .attr("font-weight", "bolder")
+
+            var dots = map.selectAll("circle.move_pts")
+                            .data(final_data);
+
+            dots.enter().append("circle")
+                        .attr("class","move_pts")
+                        .attr("transform", function(d){
+                            return "translate(" + proj(afgCoord) + ")";
+                        })
+                        .attr("r", 10)
+                        .attr("fill","white")
+                        .transition()
+                        .duration(2000)
+                        .attr("r", 10)
+                        .attr("transform", function(d){
+                                return "translate(" + proj(d.coords) + ")";
+                        })
+                        .attr("fill",function(d)
+                        {
+                            for(i=0;i<6;i++)
+                            {
+                                if(d.death_cause === deaths_cause[i].cause)
+                                {
+                                    return deaths_cause[i].color;
+                                }
+                            };
+                        });
+            
+            dots
+            .attr("transform", function(d){
+                                        return "translate(" + proj(afgCoord) + ")";
+                                    })
+            .attr("r", 10)
+            .attr("fill", function(d)
+                    {
+                        for(i=0;i<6;i++)
+                        {
+                            if(d.death_cause === deaths_cause[i].cause)
+                            {
+                                return deaths_cause[i].color;
+                            }
+                        };
+                    })
+            .transition()
+            .duration(2000)
+            .attr("transform", function(d){
+                                        return "translate(" + proj(d.coords) + ")";
+                                    })
+            .attr("r", 10);
+        
+            dots.exit().remove();
+
+
+        //color legend 
+          var legendData = deaths_cause.map(function(d){
+            return d.cause;
+          })
+          
+          legendData = legendData.filter(function(d,i){
+                                      return legendData.indexOf(d) === i;
+                                    })
+                                  .sort(function(a,b){
+                                     return a-b;
+                                    })
+
+          var legendRects = legend.selectAll("rect")
+                                  .data(legendData);
+
+          var legendRectsEnter = legendRects.enter().append("rect");
+
+          legendRects.merge(legendRectsEnter)
+                      .attr("x", -300)
+                      .attr("y", function(d, i) {
+                        return 400 + i * legendSize + i * 10;
+                      })
+                      .attr("fill", function(d)
+                        {
+                            for(i=0;i<6;i++)
+                            {
+                                if(d === deaths_cause[i].cause)
+                                {
+                                    return deaths_cause[i].color;
+                                }
+                            };
+                        })
+                      .attr("width", legendSize)
+                      .attr("height", legendSize)
+                      
+          
+
+          var legendTexts = legend.selectAll("text")
+                                  .data(legendData);
+
+          var legendTextsEnter = legendTexts.enter().append("text")
+                                            .attr("baseline-shift", "-100%");
+
+          legendTexts.merge(legendTextsEnter)
+                      .attr("x", legendSize - 290)
+                      .attr("y", function(d, i) {
+                                        return 400 + i * legendSize + i * 10;
+                                    })
+                      .text(function(d) {
+                                  for(i=0;i<6;i++)
+                                  {
+                                        if(d === deaths_cause[i].cause)
+                                        return deaths_cause[i].cause_name;
+                                  }
+                              });
+
+
+            var zoom = d3.zoom()
+                        .translateExtent([[1, 1], [width, height]])
+                        .scaleExtent([1, 1])
+                        .on("zoom", zoomed);                                        
+
+            function zoomed() {
+                    map.attr("transform", d3.event.transform);
+                    }
+        
+            svg.call(zoom);
+        });
+    });
+}
+
+        function outputUpdate(num) {
+                    document.querySelector('#output').value = "in "+slider_months[num]; 
+                    selected_mnth = slider_months[num];
+                    drw_path(selected_mnth)
+                    d3.csv("monthly_data.csv", function(error,monthlyData){
+                        console.log("mnthly",monthlyData);
+                        monthlyData.forEach(d => {
+                            if(d.reported_month === selected_mnth)
+                            {
+                                document.querySelector('#output-1').value = d.num;
+                            }                            
+                        });
+                    });
+                }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,20 @@
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+
+original.data <- read_csv("./Missing_Migrants.csv")
+
+
+afgtoirn <- original.data %>% filter(`Incident year` %in% c("2021"), migration_route == "Afghanistan to Iran" )
+
+afgtoirn <- afgtoirn %>% select(`Incident ID`,`Region of Incident`,`Incident year`,reported_month,Incident_date, `Number of Dead`, migration_route,location_of_death, Coordinates, cause_of_death, `Region of Origin`)
+
+afgtoirn %>% group_by(`Incident year`,reported_month) %>% summarise(n())
+
+write.csv(afgtoirn,"./AfgtoIran_data.csv", row.names = FALSE)
+
+cood <- afgtoirn %>% group_by(Coordinates) %>% summarise(n())
+
+```
